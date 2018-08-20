@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import axios from "axios";
 
 const Context = React.createContext();
 
@@ -23,28 +24,15 @@ const reducer = (state, action) => {
 
 export class Provider extends Component {
   state = {
-    contacts: [
-      {
-        id: 1,
-        name: "John Breno",
-        email: "jbreno@magro.com",
-        phone: "555-555-5555"
-      },
-      {
-        id: 2,
-        name: "Focao Foquinha",
-        email: "fox@magro.com",
-        phone: "222-222-2222"
-      },
-      {
-        id: 3,
-        name: "Maezinha Maezao",
-        email: "mother@magro.com",
-        phone: "333-333-3333"
-      }
-    ],
+    contacts: [],
     dispatch: action => this.setState(state => reducer(state, action))
   };
+
+  componentDidMount() {
+    axios
+      .get("https://jsonplaceholder.typicode.com/users")
+      .then(res => this.setState({ contacts: res.data }));
+  }
 
   render() {
     return (
